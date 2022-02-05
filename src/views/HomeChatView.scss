@@ -1,0 +1,22 @@
+.chat {
+	width: 100vw;
+	height: 100vh;
+	display: grid;
+	grid-template: 50px 1fr 100px/ 1fr;
+
+	.chat-menu {
+		grid-column: 1/1;
+		grid-row: 1/2;
+	}
+	.chat-block {
+		grid-column: 1/1;
+		grid-row: 2/3;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.chat-footer {
+		grid-column: 1/1;
+		grid-row: 3/4;
+	}
+}
