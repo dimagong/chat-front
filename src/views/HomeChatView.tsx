@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useReducer } from "react"
 import { io, Socket } from "socket.io-client"
-import avatar from "./../assets/icon/icons8-person-48.png"
 import lynch from "./../assets/icon/lynch.jpg"
 import Menu from "../widget/menu/Menu"
 import "./HomeChatView.scss"
 import Messages from "../widget/cards/Messages"
 import Footer from "../widget/footer/Footer"
+import { response } from "express"
 
 let socket: Socket = io()
 const ENDPOINT = "http://localhost:5000"
@@ -54,20 +54,21 @@ const HomeChatView: React.FC = () => {
 	const [lastUserMessage, saveLastMessage] = useState("")
 
 	useEffect(() => {
+		let resp: any = null
+		const requestFromServer = () => {
+			socket.on("message", (response) => {
+				resp = setTimeout(() => {
+					sendAgentMessage(response)
+				}, 2000)
+			})
+		}
 		requestFromServer()
+		if (resp) return resp.unsubscribe()
 	}, [])
 
 	const sendToServer = (isMessage: string) => {
 		let message = isMessage
 		socket.emit("message", message)
-	}
-
-	const requestFromServer = () => {
-		socket.on("message", (response) => {
-			setTimeout(() => {
-				sendAgentMessage(response)
-			}, 2000)
-		})
 	}
 
 	const sendUserMessage = () => {
